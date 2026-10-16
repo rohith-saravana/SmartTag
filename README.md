@@ -1,64 +1,77 @@
-# ESP32-C3 Bluetooth Smart Tag - Android App
+# SmartTag
 
-> *Special Project built with dedication for my friend **Vetri**!*
+Android clients for an ESP32-C3 Bluetooth Low Energy smart tag. This repository includes a native Kotlin app and a Flutter client. The ESP32 firmware is a separate project and is not included here.
 
-Complete Android application developed for the ESP32-C3 Bluetooth Smart Tag project (Native Kotlin & Flutter options).
+## Features
 
-## Hardware Requirements
-- **ESP32-C3 Super Mini development board** (4 MB flash)
-- **MPU6050** accelerometer & gyroscope
-- **Buzzer module board**
-- **Push button** for monitoring ON/OFF state
-- ESP32 firmware running Arduino C++ (PlatformIO) configured with BLE service UUID `6e400001-b5a3-f393-e0a9-e50e24dcca9e` and device name `SmartTag-C3`.
+- Scan for and connect to a tag named `SmartTag-C3` or advertising the SmartTag BLE service.
+- Send arm, disarm, and alarm commands.
+- Read and receive live monitoring, alarm, and sensor status.
+- The native Android client also estimates proximity from BLE signal strength and supports one-meter RSSI calibration.
 
----
+## Repository layout
 
-## BLE Communication Protocol
-- **Service UUID**: `6e400001-b5a3-f393-e0a9-e50e24dcca9e`
-- **Control Characteristic UUID**: `6e400002-b5a3-f393-e0a9-e50e24dcca9e` (Write: `ARM`, `DISARM`, `ALARM_ON`, `ALARM_OFF`)
-- **Status Characteristic UUID**: `6e400003-b5a3-f393-e0a9-e50e24dcca9e` (Read + Notify, format: `MONITOR=ON;BLE=CONNECTED;ALARM=OFF;MPU=OK`)
-- **BLE Device Name**: `SmartTag-C3`
+| Path | Description |
+| --- | --- |
+| `app/` | Native Android application (Kotlin, Android Studio, Gradle) |
+| `lib/main.dart` | Flutter application using `flutter_blue_plus` |
+| `pubspec.yaml` | Flutter dependencies and SDK constraints |
 
----
+## Requirements
 
-## Option A: Native Kotlin Android App (Android Studio)
+- Android phone or tablet with Bluetooth Low Energy support
+- For the native app: Android Studio, Android SDK 34, and JDK 17
+- For the Flutter app: Flutter SDK with Dart 3, and Android build tools
+- A separately built ESP32-C3 SmartTag firmware implementing the BLE protocol below
 
-### Setup & Build
-1. Open Android Studio and open project `SmartTag`.
-2. Ensure Gradle sync completes successfully (`gradle.properties` configured with `android.useAndroidX=true`).
-3. Build project via **Build > Make Project** or `app:assembleDebug`.
+## Run the native Android app
 
-### Connecting Physical Android Device & USB Debugging
-1. Enable **USB Debugging** in Developer Options on your Android phone.
-2. Connect via USB and click **Run** (▶) in Android Studio to install and launch.
-
----
-
-## Option B: Minimal Flutter App (`flutter_blue_plus`)
-
-### Build and Install Instructions (Terminal)
-Run these commands in your Flutter project terminal:
+Open this repository in Android Studio, allow Gradle sync to finish, then run the `app` configuration on an Android device. To build a debug APK from a terminal:
 
 ```bash
-# Get dependencies
-flutter pub get
-
-# Build release APK
-flutter build apk --release
-
-# Connect your phone via USB with USB Debugging enabled and install the APK
-flutter install
+./gradlew :app:assembleDebug
 ```
 
----
+On Windows, use `gradlew.bat :app:assembleDebug`.
 
-## Testing Instructions
+## Run the Flutter app
 
-1. **Power on ESP32-C3 Smart Tag**: Ensure your ESP32 board is running firmware broadcasting `SmartTag-C3`.
-2. **Scan & Connect**:
-   - Tap **Connect**. The app will scan for `SmartTag-C3`, connect automatically, request MTU 247, and subscribe to status notifications.
-3. **Control & Status**:
-   - Use the 2x2 grid buttons (`ARM`, `DISARM`, `ALARM ON`, `ALARM OFF`) to send commands to the ESP32.
-   - View real-time status updates (`Monitoring`, `Alarm`, `Sensor`).
-4. **Disconnection**:
-   - Disconnect manually or turn off the ESP32. The app resets state to Disconnected.
+From the repository root, fetch dependencies and run on a connected Android device:
+
+```bash
+flutter pub get
+flutter run
+```
+
+To build a release APK:
+
+```bash
+flutter build apk --release
+```
+
+Grant the requested Bluetooth permissions. On older Android versions, also grant location permission for BLE scanning. Enable Bluetooth on the phone and power on the ESP32 tag before connecting.
+
+## BLE protocol
+
+Both clients expect the ESP32 firmware to expose this GATT service:
+
+| Attribute | UUID | Access / value |
+| --- | --- | --- |
+| Service | `6e400001-b5a3-f393-e0a9-e50e24dcca9e` | SmartTag service |
+| Control characteristic | `6e400002-b5a3-f393-e0a9-e50e24dcca9e` | Write UTF-8 commands: `ARM`, `DISARM`, `ALARM_ON`, `ALARM_OFF` |
+| Status characteristic | `6e400003-b5a3-f393-e0a9-e50e24dcca9e` | Read and notify; semicolon-separated key/value fields |
+
+The status value is expected in a format such as:
+
+```text
+MONITOR=ON;BLE=CONNECTED;ALARM=OFF;MPU=OK
+```
+
+The device should advertise as `SmartTag-C3` or include the SmartTag service UUID in its advertisement.
+
+## Troubleshooting
+
+- **The tag is not found:** Confirm the ESP32 is powered, advertising the expected name or service UUID, and within range. Check Bluetooth and runtime permissions on the phone.
+- **Connection succeeds but controls do not work:** Verify that the firmware exposes the control characteristic with write access and accepts the command strings above.
+- **Status does not update:** Verify that the status characteristic supports reads and notifications and sends the documented status format.
+- **Native proximity estimate is inaccurate:** Keep the phone and tag at a measured one-meter distance during calibration, then recalibrate in a stable environment. RSSI distance is an approximation and varies with surroundings.
