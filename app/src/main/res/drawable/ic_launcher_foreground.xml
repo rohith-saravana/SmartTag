@@ -1,0 +1,28 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Outer SmartTag / Chip Icon Border -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M34,24h40c5.5,0 10,4.5 10,10v40c0,5.5 -4.5,10 -10,10H34c-5.5,0 -10,-4.5 -10,-10V34C24,28.5 28.5,24 34,24z"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3" />
+
+    <!-- Inner Dark Background for C3 -->
+    <path
+        android:fillColor="#1A202C"
+        android:pathData="M38,28h32c4.4,0 8,3.6 8,8v32c0,4.4 -3.6,8 -8,8H38c-4.4,0 -8,-3.6 -8,-8V36C30,31.6 33.6,28 38,28z" />
+
+    <!-- Letter C -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M49,42c-5,0 -9,4 -9,9v6c0,5 4,9 9,9c3,0 5.6,-1.4 7.2,-3.6c0.4,-0.6 0.3,-1.4 -0.3,-1.8c-0.6,-0.4 -1.4,-0.3 -1.8,0.3C52.8,59 51,59.8 49,59.8c-3.8,0 -7,-3.2 -7,-7s3.2,-7 7,-7c2,0 3.8,0.8 5.1,2.1c0.5,0.5 1.3,0.5 1.8,0c0.5,-0.5 0.5,-1.3 0,-1.8C54.6,43.4 52,42 49,42z" />
+
+    <!-- Number 3 -->
+    <path
+        android:fillColor="#0D6EFD"
+        android:pathData="M63,42c3.5,0 6,2.5 6,6c0,1.8 -0.8,3.4 -2.1,4.5c1.7,1.1 2.8,3 2.8,5.2c0,3.5 -2.5,6.3 -6,6.3h-7c-0.7,0 -1.2,-0.5 -1.2,-1.2c0,-0.7 0.5,-1.2 1.2,-1.2h7c2.2,0 4,-1.8 4,-4.1c0,-2.3 -1.8,-4.1 -4,-4.1h-2c-0.7,0 -1.2,-0.5 -1.2,-1.2c0,-0.7 0.5,-1.2 1.2,-1.2h2c2.2,0 4,-1.8 4,-4.1c0,-2.3 -1.8,-4.1 -4,-4.1h-6c-0.7,0 -1.2,-0.5 -1.2,-1.2c0,-0.7 0.5,-1.2 1.2,-1.2H63z" />
+</vector>

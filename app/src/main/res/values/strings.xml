@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">SmartTag Controller</string>
+    <string name="status_disconnected">Status: Disconnected</string>
+    <string name="status_scanning">Status: Scanning for SmartTag-C3...</string>
+    <string name="status_connecting">Status: Connecting to SmartTag-C3...</string>
+    <string name="status_connected">Status: Connected to SmartTag-C3</string>
+    <string name="status_discovering">Status: Discovering Services...</string>
+    <string name="btn_scan">Scan &amp; Connect</string>
+    <string name="btn_disconnect">Disconnect</string>
+    <string name="label_rssi">RSSI: -- dBm</string>
+    <string name="label_signal_strength">Signal Strength: Unknown</string>
+    <string name="label_threshold">Weak Signal Threshold: -80 dBm</string>
+    <string name="label_arm">Arm System</string>
+    <string name="label_alarm_state">Alarm State: DISARMED</string>
+    <string name="label_tag_status">Tag Status Notification: None</string>
+    <string name="hint_threshold">Threshold (dBm, e.g. -80)</string>
+    <string name="btn_set_threshold">Set Threshold</string>
+</resources>
